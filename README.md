@@ -5,13 +5,39 @@ If the project has an extended doucmentation (in the `docs/` folder) provide a p
 
 ## Installation
 
-Provide the minimal, quick-start commands to set up the environment and install dependencies (e.g., `pip install .`).
-Link to the extended documentation for advanced configuration, troubleshooting, or podman guides.
+> [!NOTE]
+> Provide the minimal, quick-start commands to set up the environment and install dependencies (e.g., `pip install .`).
+> Link to the extended documentation for advanced configuration, troubleshooting, or podman guides.
+
+> [!TIP]
+> Installation for a package:
+
+1. Setup or activeate your virtual environment using python 3.13:
+   ```
+   uv venv --python 3.13
+   ```
+2. Install the package directly from GitHub:
+   ```
+   uv pip install git+https://github.com/<owner>/<repo-name>.git
+   ```
+> [!TIP]
+> Setup for an analysis/training/... **or** for package development:
+
+1. Clone the repository:
+   ```
+   # use SSH if you prefere auth via ssh-key
+   git clone https://github.com/<owner>/<repo-name>.git
+   ```
+2. Create a dedicated python environment:
+   ```
+   uv sync
+   ```
 
 ## Usage
 
-Provide a single, copy-pasteable example of how to run a script locally to get the user started immediately.
-Reference the extended documentation for the complete API reference, parameter definitions, and edge cases.
+> [!NOTE]
+> Provide a single, copy-pasteable example of how to run a script locally to get the user started immediately.
+> Reference the extended documentation for the complete API reference, parameter definitions, and edge cases.
 
 ## Data
 
