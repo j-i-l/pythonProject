@@ -2,13 +2,12 @@
 
 
 
-| Name                       |    Stmts |     Miss |   Cover |   Missing |
-|--------------------------- | -------: | -------: | ------: | --------: |
-| src/mypkgs/\_\_init\_\_.py |        4 |        2 |     50% |       4-6 |
-| src/mypkgs/math.py         |        7 |        0 |    100% |           |
-| src/mypkgs/processor.py    |        7 |        0 |    100% |           |
-| src/mypkgs/utils.py        |       12 |        0 |    100% |           |
-| **TOTAL**                  |   **30** |    **2** | **93%** |           |
+| Name                    |    Stmts |     Miss |    Cover |   Missing |
+|------------------------ | -------: | -------: | -------: | --------: |
+| src/mypkgs/math.py      |        7 |        0 |     100% |           |
+| src/mypkgs/processor.py |        7 |        0 |     100% |           |
+| src/mypkgs/utils.py     |       12 |        0 |     100% |           |
+| **TOTAL**               |   **26** |    **0** | **100%** |           |
 
 
 ## Setup coverage badge
