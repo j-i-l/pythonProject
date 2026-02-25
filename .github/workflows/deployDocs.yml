@@ -8,6 +8,7 @@ on:
 permissions:
   contents: read
   pages: write
+  id_token: write
  
 # avoid concurrent jobs
 concurrency:
