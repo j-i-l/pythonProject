@@ -1,7 +1,9 @@
 # Python Project Template
 <div align="center">
 
-<img src="./docs/_static/images/logo.png" alt="Templte Logo" width="350">
+<img src="./docs/_static/images/logo.png"
+     onerror="this.onerror=null; this.src='./_static/images/logo.png';"
+     alt="Template Logo" width="350">
 
 <p>
   <a href="https://github.com/j-i-l/pythonProject"><img src="https://img.shields.io/github/stars/j-i-l/pythonProject?style=social" alt="Stars"></a>
