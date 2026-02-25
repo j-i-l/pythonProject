@@ -62,6 +62,10 @@ source = "vcs"
 # TODO: be sure to import `__version__ from this (see src/mypkg/__init__.py)
 version-file = "src/mypkgs/_version.py"
 
+# For pytest coverage reports
+[tool.coverage.run]
+relative_files = true
+
 [build-system]
 # Require hatch-vcs alongside hatchling to enable Git tag versioning
 requires = ["hatchling", "hatch-vcs"]
