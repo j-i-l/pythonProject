@@ -71,6 +71,7 @@ source = [
 ]
 omit = [
   "*_version.py",
+  "*__init__.py",
   ]
 [tool.coverage.paths]
 source = [
