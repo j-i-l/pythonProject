@@ -1,7 +1,8 @@
 # Python Project Template
 
-A brief summary of the project's objective and what the codebase accomplishes.
-If the project has an extended doucmentation (in the `docs/` folder) provide a prominent link to the extended documentation.
+> [!NOTE]
+> A brief summary of the project's objective and what the codebase accomplishes.
+> If the project has an extended doucmentation (in the `docs/` folder) provide a prominent link to the extended documentation.
 
 ## Installation
 
@@ -28,7 +29,7 @@ If the project has an extended doucmentation (in the `docs/` folder) provide a p
    # use SSH if you prefere auth via ssh-key
    git clone https://github.com/<owner>/<repo-name>.git
    ```
-2. Create a dedicated python environment:
+2. Create a dedicated python environment and install all dependencies:
    ```
    uv sync
    ```
@@ -41,35 +42,45 @@ If the project has an extended doucmentation (in the `docs/` folder) provide a p
 
 ## Data
 
-Document where any related data resides, how it is accessed and by whom it is owned.
-Link to extended documentation for detailed data schemas, metadata, and full preprocessing pipelines.
+> [!NOTE]
+> Document where any related data resides, how it is accessed and by whom it is owned.
+> Link to extended documentation for detailed data schemas, metadata, and full preprocessing pipelines.
 
 ## Methodology
 
-List the core algorithms, mathematical models, or computational workflows utilized (e.g., "Uses a Convolutional Neural Network and Runge-Kutta integration").
-Further explanations should reside in the extended documentation.
+> [!NOTE]
+> List the core algorithms, mathematical models, or computational workflows utilized (e.g., "Uses a Convolutional Neural Network and Runge-Kutta integration").
+> Further explanations should reside in the extended documentation.
 
 ## AI Usage
 
-State if the project used any Artificial Intelligence (AI) applications and Large Language Models (LLMs).
-Mention if AI tools were used to generate content (Generative Usage) and or to alter existing content (Alterative Usage).
-For further explanations link to the [`AI_USAGE.md`](./AI_USAGE.md) file.
+> [!NOTE]
+> State if the project used any Artificial Intelligence (AI) applications and Large Language Models (LLMs).
+> Mention if AI tools were used to generate content (Generative Usage) and or to alter existing content (Alterative Usage).
+
+For detailed explanations on AI usage see the [`AI_USAGE.md`](./AI_USAGE.md) file.
 
 ## Citation
 
-If you want to cite this project use the citation information provided in [`CITATION.cff`](./CITATION.cff).
+> [!NOTE]
+> Provide a ready-to-copy BibTeX block for citing this software or the accompanying paper.
 
-Or provide a ready-to-copy BibTeX block for citing this software or the accompanying paper.
+If you want to cite this project use the citation information provided in [`CITATION.cff`](./CITATION.cff).
 
 ## License
 
-State the legal framework (e.g., MIT, GPL) governing the code, and link directly to the full [`LICENSE`](./LICENSE) file in the repository.
+> [!NOTE]
+> State the legal framework (e.g., MIT, GPL) governing the code.
+
+The full license can be found in the [`LICENSE`](./LICENSE) file.
 
 ## Contributors
 
-A brief acknowledgment of the main authors, labs, or funding agencies.
-Include a link to the [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
+> [!NOTE]
+> A brief acknowledgment of the main authors, labs, or funding agencies.
+> Include a link to the [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
 
 ## Contact Information
 
-Provide contact information (e.g. email) or clarify the method of contact (e.g. open an Issue) for inquiries.
+> [!NOTE]
+> Provide contact information (e.g. email) or clarify the method of contact (e.g. open an Issue) for inquiries.
