@@ -1,4 +1,24 @@
 # Python Project Template
+<div align="center">
+
+<img src="./docs/_static/images/logo.png" alt="Templte Logo" width="350">
+
+<p>
+  <a href="https://github.com/j-i-l/pythonProject"><img src="https://img.shields.io/github/stars/j-i-l/pythonProject?style=social" alt="Stars"></a>
+     <a href="https://github.com/j-i-l/pythonProject/generate"><img src="https://img.shields.io/badge/Template-Use_this_template-2ea44f?style=social&logo=github" alt="Use Template"></a>
+   <br>
+  <img src="https://github.com/j-i-l/pythonProject/raw/python-coverage-comment-action-data/badge.svg" alt="Coverage">
+
+  <a href="https://choosealicense.com/licenses/mit/">
+    <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
+  </a>
+</p>
+  <br>
+  <br>
+<pre>
+   <small>A versatile template for python projects</small>
+</pre>
+</div>
 
 > [!NOTE]
 > A brief summary of the project's objective and what the codebase accomplishes.
