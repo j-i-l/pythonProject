@@ -1,0 +1,19 @@
+.navbar-brand img {
+    max-height: 3rem !important; /* Adjust as needed */
+    width: auto;
+}
+/*****************************************************************************
+* Overall Layout Variables
+*/
+html {
+  --pst-color-link: green;
+  --pst-color-inline-code: green!important;
+}
+html[data-theme="light"] {
+  --pst-color-link: black;
+  --pst-color-primary: #176de8;
+}
+html[data-theme="dark"] {
+  --pst-color-link: lightgreen;
+  --pst-color-primary: #176de8;
+}

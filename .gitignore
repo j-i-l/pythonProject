@@ -1,9 +1,13 @@
 # ignore the version file
 src/*/_version.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
+
+# ignore docs output
+docs/_build/
 
 # C extensions
 *.so

@@ -20,8 +20,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://your_project_homepage.com"
-Issues = "https://your_project_homepage.com/issues"
+# TODO: Change this to the url of your github repository
+Homepage = "https://github.com/j-i-l/pythonProject"
+Issues = "https://github.com/j-i-l/pythonProject/issues"
 
 [dependency-groups]
 test = [
@@ -37,6 +38,8 @@ docs = [
     "sphinx-copybutton==0.5.2",
     "sphinx-autoapi==3.6.1",
     "myst-parser==4.0.1",
+    "sphinx-tippy==0.4.3",
+    "sphinx-autobuild==2025.8.25",
 ]
 dev = [
     {include-group = "test"},
