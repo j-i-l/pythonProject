@@ -69,6 +69,9 @@ relative_files = true
 source = [
     "src/mypkgs",
 ]
+omit = [
+  "*_version.py",
+  ]
 [tool.coverage.paths]
 source = [
   "src/mypkgs",
