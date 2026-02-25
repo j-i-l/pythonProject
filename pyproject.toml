@@ -65,6 +65,9 @@ version-file = "src/mypkgs/_version.py"
 # For pytest coverage reports
 [tool.coverage.run]
 relative_files = true
+source = [
+    "src/",
+]
 
 [build-system]
 # Require hatch-vcs alongside hatchling to enable Git tag versioning
