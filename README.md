@@ -21,12 +21,12 @@
    <small>A versatile template for python projects</small>
 </pre>
 </div>
+<!-- README-header -->
 
 > [!NOTE]
 > A brief summary of the project's objective and what the codebase accomplishes.
 > If the project has an extended doucmentation (in the `docs/` folder) provide a prominent link to the extended documentation.
 
-<!-- README-header -->
 
 ## Installation
 
