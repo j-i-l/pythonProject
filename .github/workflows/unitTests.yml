@@ -1,0 +1,72 @@
+name: Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    # we exclude draft pull requests here
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+    branches:
+      - main
+
+jobs:
+  unit-tests:
+    if: github.event_name == 'pull_request' && github.event.pull_request != null && github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        # This is relevant just if you have git submodules
+        submodules: recursive
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: "auto"
+    - name: Set up Python and install dependencies
+      # uv sync will automatically fetch the python version specified in pyproject.toml
+      run: uv sync --group test
+
+    - name: Run tests with coverage
+      run: |
+        uv run pytest -s -vvv --cov
+      env:
+        COVERAGE_FILE: ".coverage.unittests"
+
+    - name: Store coverage file
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-unittests
+        path: .coverage.unittests
+        include-hidden-files: true
+
+  coverage:
+    # report the test coverage
+    name: coverage-combine-publish
+    runs-on: ubuntu-24.04
+    needs: [unit-tests, ]
+    if: needs.unit-tests.result == 'success' || needs.unit-tests.result == 'failure'
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        id: download
+        with:
+          pattern: coverage-*
+          merge-multiple: true
+      - name: Coverage comment
+        id: coverage_comment
+        uses: py-cov-action/python-coverage-comment-action@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_COVERAGE_FILES: true
+      - name: Store Pull Request comment to be posted
+        uses: actions/upload-artifact@v4
+        if: steps.coverage_comment.outputs.COMMENT_FILE_WRITTEN == 'true'
+        with:
+          name: python-coverage-comment-action
+          path: python-coverage-comment-action.txt

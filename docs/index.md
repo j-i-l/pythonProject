@@ -11,5 +11,6 @@
 :maxdepth: 2
 
 content/docs
+content/testing/index
 scripts
 ```
