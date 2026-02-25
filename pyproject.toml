@@ -63,11 +63,15 @@ source = "vcs"
 version-file = "src/mypkgs/_version.py"
 
 # For pytest coverage reports
+# config for the test coverage
 [tool.coverage.run]
 relative_files = true
+source = [
+    "src/mypkgs",
+]
 [tool.coverage.paths]
 source = [
-    "src/",
+  "src/mypkgs",
 ]
 
 [build-system]
