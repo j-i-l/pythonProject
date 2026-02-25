@@ -65,6 +65,7 @@ version-file = "src/mypkgs/_version.py"
 # For pytest coverage reports
 [tool.coverage.run]
 relative_files = true
+[tool.coverage.paths]
 source = [
     "src/",
 ]
