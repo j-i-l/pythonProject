@@ -32,8 +32,12 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
+            # Tag with the branch name (e.g., 'main') if triggered by a branch push
+            type=ref,event=branch
+            # Tag with the git tag (e.g., '1.0.0') if triggered by a tag push
             type=ref,event=tag
-            type=raw,value=latest,enable=${{ github.ref_type == 'tag' }}
+            # Automatically tag as 'latest' ONLY if pushing to the default branch (usually main/master)
+            type=raw,value=latest,enable={{is_default_branch}}
 
       # 3. Log in to GitHub Container Registry
       - name: Log in to the Container registry
