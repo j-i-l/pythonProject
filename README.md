@@ -118,10 +118,15 @@ If you want to cite this project use the citation information provided in [`CITA
 
 The full license can be found in the [`LICENSE`](./LICENSE) file.
 
-## Contributors
+## Acknowledgments
 
 > [!NOTE]
 > A brief acknowledgment of the main authors, labs, or funding agencies.
+
+## Contributing
+
+> [!NOTE]
+> State if contrubutions are welcome or not.
 > Include a link to the [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
 
 ## Contact Information
