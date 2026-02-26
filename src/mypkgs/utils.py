@@ -6,6 +6,8 @@ import os
 import json
 from typing import Any, Dict
 
+from dotenv import load_dotenv
+
 
 def get_config(config_path: str) -> Dict[str, Any]:
     """
@@ -65,6 +67,9 @@ def set_output_dir() -> str:
     >>> print(path)
     '/tmp/results'
     """
+    # Load the environment variables from the .env file
+    load_dotenv()
+
     output_dir = os.environ.get("OUTPUT_DIR")
     if not output_dir:
         raise ValueError("OUTPUT_DIR environment variable is not set.")

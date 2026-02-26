@@ -16,6 +16,7 @@ dynamic = ["version"]
 
 dependencies = [
     # pin (== or ~= with patches) when developing scripts, minimal (>=) for packages
+    "dotenv~=0.9.9",
     "numpy==2.3.5",
 ]
 
