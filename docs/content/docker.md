@@ -109,3 +109,14 @@ export APPTAINERENV_OUTPUT_DIR=/app/results
 apptainer run --bind $(pwd)/results:/app/results hello-world-job.sif
 
 ```
+
+## The `.dockerignore` File
+
+To keep your Docker images small and secure, it is highly recommended to include a `.dockerignore` file in the root of your repository. This file works exactly like a `.gitignore` file, preventing unnecessary local files—such as your `.venv` directory, `__pycache__`, or local `results` folders—from being copied into the container during the `COPY . /app` step.
+
+```{important} Do NOT ignore the `.git` folder!
+Because this project uses dynamic versioning (via `hatch-vcs` or `setuptools_scm`), the package manager needs to read the repository's Git history to determine the correct version number during installation. 
+
+If you add `.git` to your `.dockerignore` file, the build process will crash with a `setuptools_scm` error stating it cannot detect the version. Ensure your `.git` folder is available to the Docker build context.
+
+```
