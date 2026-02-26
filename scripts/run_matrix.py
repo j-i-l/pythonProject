@@ -1,13 +1,31 @@
 """
 Example script demonstrating matrix multiplication from the mypkgs library.
+
+This script initializes two sample matrices and utilizes the custom 
+`multiply_matrices` function to calculate and print their dot product.
 """
 
 import numpy as np
+
 from mypkgs.math import multiply_matrices
 
 
 def main() -> None:
-    """Execute a simple matrix multiplication demonstration."""
+    """
+    Execute a simple matrix multiplication demonstration.
+
+    Initializes two 2x2 matrices and computes their dot product using
+    the custom `multiply_matrices` function, handling any potential
+    dimension mismatch errors.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+    """
     print("Initializing matrices...")
 
     # Create two simple 2x2 matrices

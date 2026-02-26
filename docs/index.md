@@ -10,7 +10,9 @@
 :caption: Table of Content
 :maxdepth: 2
 
+content/runningScripts
 content/docs
 content/testing/index
+content/docker
 scripts
 ```

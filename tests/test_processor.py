@@ -1,6 +1,8 @@
-import os
+"""
+Tests for the processing utilities.
+"""
 
-# Import our package functions
+import os
 from mypkgs.processor import write_hello
 
 

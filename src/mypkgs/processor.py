@@ -1,5 +1,8 @@
 """
 Core processing functions for the hello-world service.
+
+This module contains the business logic for generating greetings
+and saving output files.
 """
 
 import os
@@ -20,12 +23,6 @@ def write_hello(name: str, output_dir: str) -> str:
     -------
     str
         The full path to the created output file.
-
-    Examples
-    --------
-    >>> file_path = write_hello("Simon", "/tmp/results")
-    >>> print(file_path)
-    '/tmp/results/output_hello.txt'
     """
     output_file = os.path.join(output_dir, "output_hello.txt")
     output_content = f"Hello {name}"

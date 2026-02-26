@@ -1,29 +1,24 @@
-# Base image: Official Python 3.13 slim (Debian-based)
+# 1. Use an official, lightweight Python runtime
 FROM python:3.13-slim
 
-# Prevent interactive prompts and Python output buffering
-ENV DEBIAN_FRONTEND=noninteractive \
-    PYTHONUNBUFFERED=1
+# 2. Copy the pre-compiled uv binary from the official image
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Install curl to download uv
-RUN apt-get update && apt-get install -y curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install uv directly from Astral
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.local/bin:$PATH"
-
+# 3. Set the working directory inside the container
 WORKDIR /app
 
-# Copy dependency files first to leverage Docker layer caching
-COPY pyproject.toml requirements.txt ./
+# 4. Copy the project files into the container
+COPY . /app
 
-# Install dependencies using uv into the system environment
-RUN uv pip install --system -r requirements.txt
+# 5. Install the package and dependencies using uv
+# --system: Installs into the container's global Python (standard Docker practice)
+# --no-cache: Prevents uv from caching downloaded wheels, keeping the image small
+# --compile-bytecode: Pre-compiles .pyc files for slightly faster startup times
+RUN uv pip install --system --no-cache --compile-bytecode .
 
-# Copy configuration and execution scripts
-COPY config/ config/
-COPY scripts/ scripts/
+# 6. Create a non-root user for security (Best Practice)
+RUN useradd -m appuser && chown -R appuser /app
+USER appuser
 
-# Execute the payload
+# 7. Run the script when the container launches
 CMD ["python", "scripts/drafts/hello.py"]

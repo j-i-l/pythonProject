@@ -13,9 +13,8 @@ def multiply_matrices(
     """
     Multiply two matrices using matrix multiplication (dot product).
 
-    This function utilizes the  ``@`` operator for standard 2D matrix
+    This function utilizes the ``@`` operator for standard 2D matrix
     multiplication, which is equivalent to calling :obj:`numpy.matmul`.
-    Ensuring the inner dimensions of both arrays align.
 
     Parameters
     ----------
@@ -33,17 +32,7 @@ def multiply_matrices(
     Raises
     ------
     ValueError
-        If the inner dimensions of the matrices do not align for multiplication
-        (e.g., multiplying a 2x3 matrix by a 4x2 matrix).
-
-    Examples
-    --------
-    >>> import numpy as np
-    >>> a = np.array([[1.0, 2.0], [3.0, 4.0]])
-    >>> b = np.array([[2.0, 0.0], [1.0, 2.0]])
-    >>> multiply_matrices(a, b)
-    array([[ 4.,  4.],
-           [10.,  8.]])
+        If the inner dimensions of the matrices do not align for multiplication.
     """
     try:
         return matrix_a @ matrix_b
