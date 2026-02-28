@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required by setuptools-scm to read the full git history for versioning
 
       # 1. Convert the repository name to lowercase for Docker compatibility
       - name: Lowercase repository name
@@ -35,7 +37,17 @@ jobs:
             type=ref,event=tag
             type=raw,value=latest,enable={{is_default_branch}}
 
-      # 3. Log in to GitHub Container Registry
+      # 3. Allow .git in build context for versioning
+      # setuptools-scm requires the .git folder to dynamically determine the package version.
+      # This removes .git/ from .dockerignore so it successfully copies into the container.
+      - name: Fix .dockerignore for setuptools-scm
+        run: |
+          if [ -f .dockerignore ]; then
+            sed -i '/^\.git\//d' .dockerignore
+            sed -i '/^\.git$/d' .dockerignore
+          fi
+
+      # 4. Log in to GitHub Container Registry
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
@@ -43,7 +55,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 4. Build and push Docker image
+      # 5. Build and push Docker image
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:

@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required by hatch-vcs to read the full git history for versioning
 
       # 1. Convert the repository name to lowercase for OCI compatibility
       - name: Lowercase repository name
