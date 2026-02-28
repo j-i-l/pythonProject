@@ -3,11 +3,12 @@ name: Build Docker Container
 on:
   push:
     branches: [main]
-    tags:
-      - '*' # Triggers on any tag
+    tags: ['*']
 
 env:
   REGISTRY: ghcr.io
+  # Hardcoded name change
+  IMAGE_NAME: ${{ github.repository_owner }}/say_hello
 
 jobs:
   build-docker:
@@ -15,52 +16,39 @@ jobs:
     permissions:
       contents: read
       packages: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Required by setuptools-scm to read the full git history for versioning
+          fetch-depth: 0
 
-      # 1. Convert the repository name to lowercase for Docker compatibility
-      - name: Lowercase repository name
-        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
+      - name: Extract SCM version
+        id: scm
+        run: |
+          RAW_VERSION=$(pipx run hatch version)
+          echo "version=$(echo $RAW_VERSION | tr '+' '-')" >> $GITHUB_OUTPUT
 
-      # 2. Extract metadata (tags, labels) for Docker
-      - name: Extract Docker metadata
+      - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=tag
             type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,format=short
+            type=raw,value=${{ steps.scm.outputs.version }}
 
-      # 3. Allow .git in build context for versioning
-      # setuptools-scm requires the .git folder to dynamically determine the package version.
-      # This removes .git/ from .dockerignore so it successfully copies into the container.
-      - name: Fix .dockerignore for setuptools-scm
-        run: |
-          if [ -f .dockerignore ]; then
-            sed -i '/^\.git\//d' .dockerignore
-            sed -i '/^\.git$/d' .dockerignore
-          fi
-
-      # 4. Log in to GitHub Container Registry
-      - name: Log in to the Container registry
+      - name: Log in and Build
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 5. Build and push Docker image
-      - name: Build and push Docker image
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           file: containers/say_hello.Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
