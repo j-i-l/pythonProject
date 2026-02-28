@@ -1,0 +1,62 @@
+name: Build Apptainer Container
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - '*'
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-apptainer:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 1. Convert the repository name to lowercase for OCI compatibility
+      - name: Lowercase repository name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
+
+      # 2. Extract metadata to ensure version parity with Docker
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-sif
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      # 3. Setup Apptainer environment
+      - name: Setup Apptainer
+        uses: eWaterCycle/setup-apptainer@v2
+        with:
+          apptainer-version: 1.3.1
+
+      # 4. Build Apptainer Image (.sif)
+      - name: Build Apptainer image
+        run: |
+          apptainer build pipeline.sif containers/pipeline.def
+
+      # 5. Push Apptainer Image to GHCR via ORAS
+      - name: Push Apptainer image to GHCR
+        run: |
+          # Extract the primary version tag determined by docker/metadata-action
+          PRIMARY_TAG=${{ steps.meta.outputs.version }}
+          
+          # Construct the OCI URI. The -sif suffix prevents collisions with the Docker image.
+          APPTAINER_URI="oras://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-sif:${PRIMARY_TAG}"
+
+          echo "Authenticating Apptainer to GHCR..."
+          echo "${{ secrets.GITHUB_TOKEN }}" | apptainer remote login -u ${{ github.actor }} --password-stdin oras://${{ env.REGISTRY }}
+
+          echo "Pushing Apptainer image to ${APPTAINER_URI}..."
+          apptainer push pipeline.sif ${APPTAINER_URI}
