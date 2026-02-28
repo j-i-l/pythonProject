@@ -20,14 +20,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Required by hatch-vcs to read the full git history for versioning
+          fetch-depth: 0 # Required to read the full git history for versioning
 
-      # 1. Convert the repository name to lowercase for OCI compatibility
       - name: Lowercase repository name
         run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
 
-      # 2. Extract metadata to ensure version parity with Docker
-      - name: Extract metadata
+      - name: Extract metadata to ensure version parity
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -37,24 +35,31 @@ jobs:
             type=ref,event=tag
             type=raw,value=latest,enable={{is_default_branch}}
 
-      # 3. Setup Apptainer environment
       - name: Setup Apptainer
         uses: eWaterCycle/setup-apptainer@v2
         with:
           apptainer-version: 1.3.1
 
-      # 4. Build Apptainer Image (.sif) using sudo for namespace privileges
+      # --- NEW STEP: Extract dynamic version on the host ---
+      - name: Extract dynamic version
+        run: |
+          # pipx is pre-installed on GitHub Ubuntu runners. 
+          # It safely runs python CLI tools without polluting the system environment.
+          pipx install setuptools-scm
+          
+          # Extract the version and save it to the GitHub environment variables
+          COMPUTED_VERSION=$(setuptools-scm)
+          echo "PKG_VERSION=$COMPUTED_VERSION" >> $GITHUB_ENV
+          echo "Extracted Version: $COMPUTED_VERSION"
+
+      # --- UPDATED STEP: Pass the version as a build argument ---
       - name: Build Apptainer image
         run: |
-          sudo apptainer build say_hello.sif containers/say_hello.def
+          sudo apptainer build --build-arg VERSION="${PKG_VERSION}" say_hello.sif containers/say_hello.def
 
-      # 5. Push Apptainer Image to GHCR via ORAS
       - name: Push Apptainer image to GHCR
         run: |
-          # Extract the primary version tag determined by docker/metadata-action
           PRIMARY_TAG=${{ steps.meta.outputs.version }}
-          
-          # Construct the OCI URI. The -sif suffix prevents collisions with the Docker image.
           APPTAINER_URI="oras://${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-sif:${PRIMARY_TAG}"
 
           echo "Authenticating Apptainer to GHCR..."
