@@ -6,8 +6,8 @@
 |------------------------ | -------: | -------: | -------: | --------: |
 | src/mypkgs/math.py      |        7 |        0 |     100% |           |
 | src/mypkgs/processor.py |        7 |        0 |     100% |           |
-| src/mypkgs/utils.py     |       10 |        0 |     100% |           |
-| **TOTAL**               |   **24** |    **0** | **100%** |           |
+| src/mypkgs/utils.py     |       12 |        0 |     100% |           |
+| **TOTAL**               |   **26** |    **0** | **100%** |           |
 
 
 ## Setup coverage badge
