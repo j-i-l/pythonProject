@@ -1,0 +1,25 @@
+Bootstrap: docker
+From: python:3.13-slim
+
+%files
+    # Explicitly copy required directories to avoid capturing local .env files
+    pyproject.toml /app/
+    src/ /app/src/
+    scripts/ /app/scripts/
+
+%post
+    # 1. Install necessary system dependencies
+    apt-get update && apt-get install -y git curl
+    rm -rf /var/lib/apt/lists/*
+
+    # 2. Install uv package manager
+    curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | env UV_INSTALL_DIR="/bin" sh
+
+    # 3. Install the project in the system environment utilizing uv
+    cd /app
+    uv pip install --system --no-cache --compile-bytecode .
+
+%runscript
+    # 4. Define the execution behavior
+    cd /app
+    exec python scripts/drafts/hello.py "$@"

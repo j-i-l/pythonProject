@@ -1,4 +1,4 @@
-name: Build and Push Container
+name: Build Docker Container
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  build-and-push:
+  build-docker:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -22,8 +22,7 @@ jobs:
 
       # 1. Convert the repository name to lowercase for Docker compatibility
       - name: Lowercase repository name
-        run: |
-          echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> ${GITHUB_ENV}
 
       # 2. Extract metadata (tags, labels) for Docker
       - name: Extract Docker metadata
@@ -32,11 +31,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            # Tag with the branch name (e.g., 'main') if triggered by a branch push
             type=ref,event=branch
-            # Tag with the git tag (e.g., '1.0.0') if triggered by a tag push
             type=ref,event=tag
-            # Automatically tag as 'latest' ONLY if pushing to the default branch (usually main/master)
             type=raw,value=latest,enable={{is_default_branch}}
 
       # 3. Log in to GitHub Container Registry
@@ -52,6 +48,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: containers/pipeline.Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
