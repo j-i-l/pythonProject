@@ -41,10 +41,10 @@ jobs:
         with:
           apptainer-version: 1.3.1
 
-      # 4. Build Apptainer Image (.sif)
+      # 4. Build Apptainer Image (.sif) using sudo for namespace privileges
       - name: Build Apptainer image
         run: |
-          apptainer build say_hello.sif containers/say_hello.def
+          sudo apptainer build say_hello.sif containers/say_hello.def
 
       # 5. Push Apptainer Image to GHCR via ORAS
       - name: Push Apptainer image to GHCR
