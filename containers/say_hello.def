@@ -7,7 +7,7 @@ From: python:3.13-slim
     src/ /app/src/
     scripts/ /app/scripts/
     
-    # REQUIRED BY HATCHLING: Copy .git folder for dynamic versioning
+    # REQUIRED: Copy .git folder so we can extract the version
     .git/ /app/.git/
 
 %post
@@ -19,17 +19,19 @@ From: python:3.13-slim
     curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/bin" sh
 
     # 3. Configure Git to trust the mounted directory
+    cd /app
     git config --global --add safe.directory /app
 
-    # 4. Install the project utilizing uv
-    cd /app
-    
-    # FIX: Bypass isolated build directories so hatch-vcs can locate the .git root.
-    # Pre-install the build backend, then install the project without isolation.
-    uv pip install --system hatchling hatch-vcs
-    uv pip install --system --no-build-isolation --no-cache --compile-bytecode .
+    # 4. Extract version and inject it into the environment
+    # By exporting this variable, hatch-vcs will completely ignore the missing .git 
+    # folder during the isolated build phase in /tmp/
+    uv pip install --system setuptools-scm
+    export SETUPTOOLS_SCM_PRETEND_VERSION=$(python -m setuptools_scm)
+
+    # 5. Install the project normally (build isolation will now succeed)
+    uv pip install --system --no-cache --compile-bytecode .
 
 %runscript
-    # 5. Define the execution behavior
+    # 6. Define the execution behavior
     cd /app
     exec python scripts/drafts/hello.py "$@"

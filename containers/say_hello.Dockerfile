@@ -10,13 +10,16 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 # 4. Set the working directory inside the container
 WORKDIR /app
 
-# 5. Copy the project files into the container (respecting .dockerignore)
+# 5. Copy the project files into the container 
 COPY . /app
 
-# 6. Install the package and dependencies using uv
-# Bypass build isolation so hatch-vcs can detect the .git root
-RUN uv pip install --system hatchling hatch-vcs && \
-    uv pip install --system --no-build-isolation --no-cache --compile-bytecode .
+# 6. Extract the version and build the project
+# We chain the export and install commands with '&&' so the environment 
+# variable persists for the uv install command within the same Docker layer.
+RUN git config --global --add safe.directory /app && \
+    uv pip install --system setuptools-scm && \
+    export SETUPTOOLS_SCM_PRETEND_VERSION=$(python -m setuptools_scm) && \
+    uv pip install --system --no-cache --compile-bytecode .
 
 # 7. Create a non-root user for security
 RUN useradd -m appuser && chown -R appuser /app
