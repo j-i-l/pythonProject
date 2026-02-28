@@ -2,7 +2,7 @@ Bootstrap: docker
 From: python:3.13-slim
 
 %files
-    # Explicitly copy required directories to avoid capturing local .env files
+    # Explicitly copy required directories
     pyproject.toml /app/
     src/ /app/src/
     scripts/ /app/scripts/
@@ -15,14 +15,17 @@ From: python:3.13-slim
     apt-get update && apt-get install -y git curl
     rm -rf /var/lib/apt/lists/*
 
-    # 2. Install uv package manager (Fixed URL syntax here)
+    # 2. Install uv package manager
     curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/bin" sh
 
-    # 3. Install the project in the system environment utilizing uv
+    # 3. Configure Git to trust the mounted directory
+    git config --global --add safe.directory /app
+
+    # 4. Install the project in the system environment utilizing uv
     cd /app
     uv pip install --system --no-cache --compile-bytecode .
 
 %runscript
-    # 4. Define the execution behavior
+    # 5. Define the execution behavior
     cd /app
     exec python scripts/drafts/hello.py "$@"
