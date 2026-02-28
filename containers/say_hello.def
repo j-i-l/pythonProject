@@ -1,33 +1,33 @@
 Bootstrap: docker
 From: python:3.13-slim
 
+%arguments
+    VERSION
+
 %files
-    # Explicitly copy required metadata and source files
     pyproject.toml /app/
     LICENSE /app/
     README.md /app/
     src /app/src
     scripts/drafts/say_hello.py /app/scripts/drafts/say_hello.py
-    
-    # Required by the build backend to extract dynamic versioning
-    .git /app/.git
 
 %post
-    # 1. Install necessary system dependencies
-    apt-get update && apt-get install -y git curl
+    # 1. System updates (Git is no longer strictly required here!)
+    apt-get update && apt-get install -y curl
     rm -rf /var/lib/apt/lists/*
 
-    # 2. Install the uv package manager
+    # 2. Install uv
     curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/bin" sh
 
-    # 3. Configure Git to trust the mounted directory system-wide
+    # 3. Build and Install
     cd /app
-    git config --system --add safe.directory /app
-
-    # 4. Install the project utilizing uv
+    
+    # Inject the version and suppress filesystem warnings
+    export SETUPTOOLS_SCM_PRETEND_VERSION="{{ VERSION }}"
+    export UV_LINK_MODE=copy
+    
     uv pip install --system --no-cache --compile-bytecode .
 
 %runscript
-    # 5. Define the execution behavior
     cd /app
     exec python scripts/drafts/say_hello.py "$@"

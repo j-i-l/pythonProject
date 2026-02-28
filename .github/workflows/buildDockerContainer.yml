@@ -22,11 +22,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Extract SCM version
+      - name: Extract SCM versions
         id: scm
         run: |
+          # The raw version hatch gives us (e.g., 0.1.dev51+gf41b6)
           RAW_VERSION=$(pipx run hatch version)
-          echo "version=$(echo $RAW_VERSION | tr '+' '-')" >> $GITHUB_OUTPUT
+          
+          # 1. Version for Python/Hatch (Keep the +)
+          echo "py_version=$RAW_VERSION" >> $GITHUB_OUTPUT
+          
+          # 2. Version for Docker Tags (Replace + with -)
+          CLEAN_VERSION=$(echo $RAW_VERSION | tr '+' '-')
+          echo "tag_version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
 
       - name: Extract metadata
         id: meta
@@ -36,9 +43,10 @@ jobs:
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha,format=short
-            type=raw,value=${{ steps.scm.outputs.version }}
+            # Use the SANITIZED version for the registry tag
+            type=raw,value=${{ steps.scm.outputs.tag_version }}
 
-      - name: Log in and Build
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -52,3 +60,6 @@ jobs:
           file: containers/say_hello.Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          build-args: |
+            # Use the RAW version for the internal Python build
+            VERSION=${{ steps.scm.outputs.py_version }}
