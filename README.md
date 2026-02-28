@@ -2,12 +2,12 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/j-i-l/pythonProject/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                    |    Stmts |     Miss |    Cover |   Missing |
-|------------------------ | -------: | -------: | -------: | --------: |
-| src/mypkgs/math.py      |        7 |        0 |     100% |           |
-| src/mypkgs/processor.py |        7 |        0 |     100% |           |
-| src/mypkgs/utils.py     |       12 |        0 |     100% |           |
-| **TOTAL**               |   **26** |    **0** | **100%** |           |
+| Name                |    Stmts |     Miss |    Cover |   Missing |
+|-------------------- | -------: | -------: | -------: | --------: |
+| src/mypkgs/hello.py |        7 |        0 |     100% |           |
+| src/mypkgs/math.py  |        7 |        0 |     100% |           |
+| src/mypkgs/utils.py |       12 |        0 |     100% |           |
+| **TOTAL**           |   **26** |    **0** | **100%** |           |
 
 
 ## Setup coverage badge
