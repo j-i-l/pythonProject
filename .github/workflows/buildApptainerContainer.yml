@@ -44,7 +44,7 @@ jobs:
       # 4. Build Apptainer Image (.sif)
       - name: Build Apptainer image
         run: |
-          apptainer build pipeline.sif containers/pipeline.def
+          apptainer build say_hello.sif containers/say_hello.def
 
       # 5. Push Apptainer Image to GHCR via ORAS
       - name: Push Apptainer image to GHCR
@@ -59,4 +59,4 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | apptainer remote login -u ${{ github.actor }} --password-stdin oras://${{ env.REGISTRY }}
 
           echo "Pushing Apptainer image to ${APPTAINER_URI}..."
-          apptainer push pipeline.sif ${APPTAINER_URI}
+          apptainer push say_hello.sif ${APPTAINER_URI}
