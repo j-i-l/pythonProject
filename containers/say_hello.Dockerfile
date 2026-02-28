@@ -10,15 +10,11 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 # 4. Set the working directory inside the container
 WORKDIR /app
 
-# 5. Copy the project files into the container 
+# 5. Copy the project files into the container (respecting .dockerignore)
 COPY . /app
 
-# 6. Extract the version using hatch and build the project
-# We chain the export and install commands with '&&' so the environment 
-# variable persists for the uv install command within the same Docker layer.
-RUN git config --global --add safe.directory /app && \
-    export SETUPTOOLS_SCM_PRETEND_VERSION=$(uvx hatch version) && \
-    uv pip install --system --no-cache --compile-bytecode .
+# 6. Install the package and dependencies using uv
+RUN uv pip install --system --no-cache --compile-bytecode .
 
 # 7. Create a non-root user for security
 RUN useradd -m appuser && chown -R appuser /app
