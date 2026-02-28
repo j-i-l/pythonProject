@@ -14,7 +14,9 @@ WORKDIR /app
 COPY . /app
 
 # 6. Install the package and dependencies using uv
-RUN uv pip install --system --no-cache --compile-bytecode .
+# Bypass build isolation so hatch-vcs can detect the .git root
+RUN uv pip install --system hatchling hatch-vcs && \
+    uv pip install --system --no-build-isolation --no-cache --compile-bytecode .
 
 # 7. Create a non-root user for security
 RUN useradd -m appuser && chown -R appuser /app

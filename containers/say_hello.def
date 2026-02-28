@@ -21,9 +21,13 @@ From: python:3.13-slim
     # 3. Configure Git to trust the mounted directory
     git config --global --add safe.directory /app
 
-    # 4. Install the project in the system environment utilizing uv
+    # 4. Install the project utilizing uv
     cd /app
-    uv pip install --system --no-cache --compile-bytecode .
+    
+    # FIX: Bypass isolated build directories so hatch-vcs can locate the .git root.
+    # Pre-install the build backend, then install the project without isolation.
+    uv pip install --system hatchling hatch-vcs
+    uv pip install --system --no-build-isolation --no-cache --compile-bytecode .
 
 %runscript
     # 5. Define the execution behavior
