@@ -13,7 +13,7 @@ from mypkgs.utils import (
     load_json_config, 
     prepare_output_dir
 )
-from mypkgs.processor import write_hello
+from mypkgs.hello import write_hello
 
 
 def main() -> None:
@@ -22,7 +22,7 @@ def main() -> None:
 
     Parses command line arguments, loads configurations from the 
     injected environment, prepares the output directory, and executes
-    the greeting processor.
+    the greeting function.
 
     Parameters
     ----------

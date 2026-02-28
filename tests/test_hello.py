@@ -3,7 +3,7 @@ Tests for the processing utilities.
 """
 
 import os
-from mypkgs.processor import write_hello
+from mypkgs.hello import write_hello
 
 
 def test_write_hello(tmp_path):
