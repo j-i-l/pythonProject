@@ -21,4 +21,4 @@ RUN useradd -m appuser && chown -R appuser /app
 USER appuser
 
 # 8. Run the script when the container launches
-CMD ["python", "scripts/drafts/hello.py"]
+CMD ["python", "scripts/drafts/say_hello.py"]

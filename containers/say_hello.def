@@ -1,18 +1,14 @@
 Bootstrap: docker
 From: python:3.13-slim
 
-# Declare build arguments (no default fallback allowed)
-%arguments
-    VERSION 
-
 %files
     # Explicitly copy required directories
     pyproject.toml /app/
-    src/ /app/src/
-    scripts/ /app/scripts/
-    
-    # .git is still copied so the build backend acknowledges it is a VCS project
-    .git/ /app/.git/
+    LICENSE /app/
+    README.md /app/
+    src /app/src
+    scripts/drafts/say_hello.py /app/scripts/drafts/say_hello.py
+    .git /app/.git
 
 %post
     # 1. Install necessary system dependencies
@@ -26,14 +22,10 @@ From: python:3.13-slim
     cd /app
     git config --system --add safe.directory /app
 
-    # 4. Inject the dynamically computed version from the build arguments
-    # The double curly braces map to the %arguments block
-    export SETUPTOOLS_SCM_PRETEND_VERSION="{{ VERSION }}"
-
     # 5. Install the project utilizing uv
     uv pip install --system --no-cache --compile-bytecode .
 
 %runscript
     # 6. Define the execution behavior
     cd /app
-    exec python scripts/drafts/hello.py "$@"
+    exec python scripts/drafts/say_hello.py "$@"

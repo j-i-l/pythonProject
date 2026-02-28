@@ -55,7 +55,7 @@ jobs:
       # --- UPDATED STEP: Pass the version as a build argument ---
       - name: Build Apptainer image
         run: |
-          sudo apptainer build --build-arg VERSION="${PKG_VERSION}" say_hello.sif containers/say_hello.def
+          sudo apptainer build say_hello.sif containers/say_hello.def
 
       - name: Push Apptainer image to GHCR
         run: |
