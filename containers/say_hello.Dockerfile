@@ -13,12 +13,11 @@ WORKDIR /app
 # 5. Copy the project files into the container 
 COPY . /app
 
-# 6. Extract the version and build the project
+# 6. Extract the version using hatch and build the project
 # We chain the export and install commands with '&&' so the environment 
 # variable persists for the uv install command within the same Docker layer.
 RUN git config --global --add safe.directory /app && \
-    uv pip install --system setuptools-scm && \
-    export SETUPTOOLS_SCM_PRETEND_VERSION=$(python -m setuptools_scm) && \
+    export SETUPTOOLS_SCM_PRETEND_VERSION=$(uvx hatch version) && \
     uv pip install --system --no-cache --compile-bytecode .
 
 # 7. Create a non-root user for security

@@ -7,7 +7,7 @@ From: python:3.13-slim
     src/ /app/src/
     scripts/ /app/scripts/
     
-    # REQUIRED: Copy .git folder so we can extract the version
+    # REQUIRED: Copy .git folder so hatch can extract the version
     .git/ /app/.git/
 
 %post
@@ -22,11 +22,9 @@ From: python:3.13-slim
     cd /app
     git config --global --add safe.directory /app
 
-    # 4. Extract version and inject it into the environment
-    # By exporting this variable, hatch-vcs will completely ignore the missing .git 
-    # folder during the isolated build phase in /tmp/
-    uv pip install --system setuptools-scm
-    export SETUPTOOLS_SCM_PRETEND_VERSION=$(python -m setuptools_scm)
+    # 4. Extract version using hatch and inject it into the environment
+    # uvx runs hatch temporarily without needing to permanently install it
+    export SETUPTOOLS_SCM_PRETEND_VERSION=$(uvx hatch version)
 
     # 5. Install the project normally (build isolation will now succeed)
     uv pip install --system --no-cache --compile-bytecode .
