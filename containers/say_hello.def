@@ -25,10 +25,20 @@ From: python:3.13-slim
     # Inject the version and suppress filesystem warnings
     export SETUPTOOLS_SCM_PRETEND_VERSION="{{ VERSION }}"
     export UV_LINK_MODE=copy
+
+    # Create the virtual environment inside the container 
+    export VIRTUAL_ENV=/opt/venv 
+    export PATH="/opt/venv/bin:$PATH" 
+    export UV_PROJECT_ENVIRONMENT="/opt/venv"
     
     # Install dependencies directly from the pyproject.toml 
     uv venv /opt/venv 
     uv pip install --no-cache --compile-bytecode .
+
+%environment 
+    # Ensure the container always uses this environment when running 
+    export VIRTUAL_ENV=/opt/venv
+    export PATH="/opt/venv/bin:$PATH"
 
 %runscript
     cd /app
