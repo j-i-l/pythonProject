@@ -12,7 +12,7 @@ From: python:3.13-slim
     scripts/drafts/say_hello.py /app/scripts/drafts/say_hello.py
 
 %post
-    # 1. System updates (Git is no longer strictly required here!)
+    # 1. System updates
     apt-get update && apt-get install -y curl
     rm -rf /var/lib/apt/lists/*
 
@@ -26,7 +26,9 @@ From: python:3.13-slim
     export SETUPTOOLS_SCM_PRETEND_VERSION="{{ VERSION }}"
     export UV_LINK_MODE=copy
     
-    uv pip install --system --no-cache --compile-bytecode .
+    # Install dependencies directly from the pyproject.toml 
+    uv venv /opt/venv 
+    uv pip install --no-cache --compile-bytecode .
 
 %runscript
     cd /app
