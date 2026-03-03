@@ -13,6 +13,6 @@
 content/runningScripts
 content/docs
 content/testing/index
-content/docker
+content/containers/index
 scripts
 ```

@@ -9,13 +9,14 @@ import json
 from pathlib import Path
 from typing import Any
 
+
 def load_json_config(config_path: Path | str) -> dict[str, Any]:
     """
     Reads and parses a JSON configuration file.
 
-    The specified file is accessed in read mode, and its contents are 
-    decoded from JSON format into a Python dictionary. It is required 
-    that the root element of the targeted JSON file constitutes a valid 
+    The specified file is accessed in read mode, and its contents are
+    decoded from JSON format into a Python dictionary. It is required
+    that the root element of the targeted JSON file constitutes a valid
     JSON object (key-value pairs).
 
     Parameters
@@ -35,7 +36,7 @@ def load_json_config(config_path: Path | str) -> dict[str, Any]:
     json.JSONDecodeError
         If the file contains invalid JSON syntax and cannot be parsed.
     IsADirectoryError
-        If the provided path resolves to a directory rather than a standard file.
+        If the provided path resolves to a directory.
 
     Examples
     --------
@@ -44,10 +45,8 @@ def load_json_config(config_path: Path | str) -> dict[str, Any]:
     <class 'dict'>
     """
     path = Path(config_path).resolve()
-    
     with path.open("r", encoding="utf-8") as file:
         config_data = json.load(file)
-        
     return config_data
 
 
@@ -55,9 +54,9 @@ def prepare_output_dir(output_path: Path | str) -> str:
     """
     Validates and prepares the designated output directory.
 
-    This function ensures that the specified output path exists. If the 
-    directory does not exist, it safely creates it along with any necessary 
-    parent directories. 
+    This function ensures that the specified output path exists. If the
+    directory does not exist, it safely creates it along with any necessar
+    parent directories.
 
     Parameters
     ----------

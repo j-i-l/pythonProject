@@ -1,0 +1,47 @@
+# -----------------------------------------------------------------------------
+# Agnostic Python Execution Engine
+# -----------------------------------------------------------------------------
+Bootstrap: docker
+From: python:3.13-slim
+
+%post
+    # Only install what is needed to get 'uv' running inside the container
+    apt-get update && \
+    apt-get install -y --no-install-recommends curl ca-certificates git
+
+    # optionally install further system dependencies
+
+    rm -rf /var/lib/apt/lists/*
+
+    # Install uv globally in the container
+    curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh
+
+%environment
+    # --- REPLACES `source activate` ---
+    # With $PWD it always looks for the .venv in the current host directory
+    export VIRTUAL_ENV="$PWD/.venv"
+    export PATH="$PWD/.venv/bin:$PATH"
+    
+    # Force uv to use the containers python and the local venv
+    export UV_PYTHON_PREFERENCE=only-managed
+    export UV_PROJECT_ENVIRONMENT="$PWD/.venv"
+
+%runscript
+    # If the user runs the container without any arguments, just set up the venv
+    if [ $# -eq 0 ]; then
+        echo ">>> Syncing Python Environment..."
+        
+        if [ -f "pyproject.toml" ]; then
+            # 'uv sync' automatically creates the .venv if it doesnt exist.
+            uv sync
+            echo ">>> Success: Environment synced."
+        else
+            echo ">>> Error: No pyproject.toml found in $PWD."
+            exit 1
+        fi
+        exit 0
+    fi
+
+    # If the user passes arguments (like `python script.py` or `uv pip install ...`),
+    # transparently execute that command inside the container environment.
+    exec "$@"
